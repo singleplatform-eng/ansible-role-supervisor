@@ -1,3 +1,5 @@
+---
+
 - name: Add managed config files for supervisor programs.
   template:
     src: program.j2
