@@ -1,0 +1,6 @@
+{% for group in supervisor_groups %}
+[group:{{ group.name }}]
+programs={{ group.programs }}
+{% if group.priority is defined %}priority={{ group.priority }}{% endif %}
+
+{% endfor %}

@@ -1,0 +1,33 @@
+- name: Add managed config files for supervisor programs.
+  template:
+    src: program.j2
+    dest: "{{supervisor_include_path}}/{{item.name}}.conf"
+    mode: 0644
+  with_items: "{{supervisor_programs}}"
+  when: supervisor_programs|length > 0
+  notify:
+    - reload supervisord
+
+- name: Add managed program groups config file (if any groups are configured).
+  template:
+    src: groups.j2
+    dest: "{{supervisor_include_path}}/groups.conf"
+    mode: 0644
+  when: supervisor_groups|length > 0
+  notify:
+    - reload supervisord
+
+# TODO: use find module once we move to 2.0
+- name: Find conf files in supervisor_include_path
+  shell: find {{supervisor_include_path}} -name '*.conf' -type f -printf '%f\n'|sed 's/.conf//'
+  register: all_supervisor_confs
+
+- name: Remove un-managed supervisor config files
+  file:
+    path: "{{supervisor_include_path}}/{{item}}.conf"
+    state: absent
+  with_items: "{{all_supervisor_confs.stdout_lines}}"
+  when: item not in supervisor_programs|map(attribute='name')|list+['groups']
+  notify:
+    - reload supervisord
+

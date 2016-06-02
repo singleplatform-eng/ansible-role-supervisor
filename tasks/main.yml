@@ -1,0 +1,57 @@
+---
+
+- name: Install supervisor package
+  pip:
+    name: supervisor
+    state: present
+
+# https://github.com/Supervisor/initscripts
+- name: Copy supervisor init script
+  template:
+    src: init_upstart.j2
+    dest: /etc/init/supervisord.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Ensure supervisor_log_dir exists
+  file:
+    path: "{{supervisor_log_dir}}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Copy logrotate config
+  template:
+    src: logrotate.j2
+    dest: /etc/logrotate.d/supervisor
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Ensure /etc/supervisor/ directory exists
+  file:
+    path: /etc/supervisor
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Copy supervisord.conf
+  template:
+    src: supervisord.conf.j2
+    dest: "{{supervisor_conf}}"
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart supervisord
+
+# programs and groups configuration.
+- include: programs_and_groups.yml
+
+- name: Start and enable supervisor service
+  service:
+    name: supervisord
+    enabled: yes
+  notify: start supervisord

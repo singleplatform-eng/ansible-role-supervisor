@@ -1,0 +1,26 @@
+---
+
+- name: reload supervisord
+  service:
+    name: supervisord
+    state: reloaded
+
+- name: start supervisord
+  service:
+    name: supervisord
+    state: started
+
+- name: restart supervisord
+  service:
+    name: supervisord
+    state: restarted
+
+- name: restart supervisor managed programs
+  supervisorctl:
+    name: all
+    state: restarted
+
+- name: stop supervisord
+  service:
+    name: supervisord
+    state: stopped

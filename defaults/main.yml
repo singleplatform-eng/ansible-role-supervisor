@@ -1,0 +1,6 @@
+---
+
+supervisor_conf: /etc/supervisord.conf
+supervisor_log_dir: /var/log/supervisor
+supervisor_include_path: /etc/supervisor
+supervisor_groups: []
