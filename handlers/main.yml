@@ -17,8 +17,9 @@
 
 - name: restart supervisor managed programs
   supervisorctl:
-    name: all
+    name: "{{item.name}}"
     state: restarted
+  with_items: "{{supervisor_programs}}"
 
 - name: stop supervisord
   service:
