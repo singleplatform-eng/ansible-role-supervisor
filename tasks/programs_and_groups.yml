@@ -8,7 +8,7 @@
   with_items: "{{supervisor_programs}}"
   when: supervisor_programs|length > 0
   notify:
-    - reload supervisord
+    - restart supervisord
 
 - name: Add managed program groups config file (if any groups are configured).
   template:
@@ -17,7 +17,7 @@
     mode: 0644
   when: supervisor_groups|length > 0
   notify:
-    - reload supervisord
+    - restart supervisord
 
 # TODO: use find module once we move to 2.0
 - name: Find conf files in supervisor_include_path
@@ -31,5 +31,5 @@
   with_items: "{{all_supervisor_confs.stdout_lines}}"
   when: item not in supervisor_programs|map(attribute='name')|list+['groups']
   notify:
-    - reload supervisord
+    - restart supervisord
 
