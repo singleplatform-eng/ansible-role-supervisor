@@ -51,7 +51,4 @@
 - include: programs_and_groups.yml
 
 - name: Start and enable supervisor service
-  service:
-    name: supervisord
-    enabled: yes
-  notify: start supervisord
+  service: name=supervisord state=started enabled=yes
