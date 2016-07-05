@@ -14,6 +14,7 @@
   supervisorctl:
     name: "{{item.name}}"
     state: restarted
+  when: item.autostart
   with_items: "{{supervisor_programs}}"
 
 - name: stop supervisord
