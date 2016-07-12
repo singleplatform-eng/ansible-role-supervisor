@@ -4,6 +4,8 @@
   template:
     src: program.j2
     dest: "{{supervisor_include_path}}/{{item.name}}.conf"
+    owner: root
+    group: root
     mode: 0644
   with_items: "{{supervisor_programs}}"
   when: supervisor_programs|length > 0
@@ -13,8 +15,10 @@
   template:
     src: groups.j2
     dest: "{{supervisor_include_path}}/groups.conf"
+    owner: root
+    group: root
     mode: 0644
-  when: supervisor_groups|length > 0
+  when: supervisor_program_groups|length > 0
   notify: restart supervisor managed programs
 
 # TODO: use find module once we move to 2.0

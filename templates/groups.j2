@@ -1,4 +1,6 @@
-{% for group in supervisor_groups %}
+{{ansible_managed}}
+
+{% for group in supervisor_program_groups %}
 [group:{{ group.name }}]
 programs={{ group.programs }}
 {% if group.priority is defined %}priority={{ group.priority }}{% endif %}
