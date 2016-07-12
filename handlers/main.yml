@@ -21,3 +21,8 @@
   service:
     name: supervisord
     state: stopped
+
+- name: restart syslog
+  service:
+    name: rsyslog
+    state: restarted

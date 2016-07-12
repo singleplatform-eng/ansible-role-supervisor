@@ -1,4 +1,7 @@
-{{supervisor_log_dir}}/supervisord.log {
-    nocompress
-    missingok
+{{ansible_managed}}
+
+{{supervisor_log_dir}}/*.log {
+{% for item in supervisor_logrotate_conf %}
+  {{item}}
+{% endfor %}
 }

@@ -1,7 +1,31 @@
 ---
 
-supervisor_conf: /etc/supervisord.conf
-supervisor_log_dir: /var/log/supervisor
+supervisor_conf_file: /etc/supervisord.conf
 supervisor_include_path: /etc/supervisor
+supervisor_user: root
+supervisor_group: "{{'syslog' if supervisor_use_syslog else 'root'}}"
+supervisor_log_dir: /var/log/supervisor
+supervisor_log_file: "{{supervisor_log_dir}}/supervisord.log"
+supervisor_use_syslog: false
 supervisor_programs: []
-supervisor_groups: []
+supervisor_program_groups: []
+
+supervisor_supervisord_conf:
+  # logging config is based on whether syslog is in use or not
+  logfile:          "{{supervisor_log_file if not supervisor_use_syslog else 'syslog'}}"
+  logfile_maxbytes: "{{'50MB'              if not supervisor_use_syslog else None}}"
+  logfile_backups:  "{{'10'                if not supervisor_use_syslog else None}}"
+  loglevel:         "{{'info'              if not supervisor_use_syslog else None}}"
+  pidfile:          /tmp/supervisord.pid
+  nodaemon:         'false'
+  minfds:           1024
+  minprocs:         200
+
+supervisor_logrotate_conf:
+  - daily
+  - missingok
+  - 'rotate 7'
+  - compress
+  - delaycompress
+  - notifempty
+  - "create 660 {{supervisor_user}} {{supervisor_group}}"

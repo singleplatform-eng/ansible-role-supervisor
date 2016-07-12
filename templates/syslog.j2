@@ -1,0 +1,10 @@
+if $programname == 'supervisord' then {
+{% for item in supervisor_programs %}
+{% if item == supervisor_programs[0] %}
+  if $msg startswith ' {{item.name}} ' then {{supervisor_log_dir}}/{{item.name}}.log
+{% else %}
+  else if $msg startswith ' {{item.name}} ' then {{supervisor_log_dir}}/{{item.name}}.log
+{% endif %}
+{% endfor %}
+  else {{supervisor_log_file}}
+}

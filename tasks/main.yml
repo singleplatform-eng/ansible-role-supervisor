@@ -18,9 +18,9 @@
   file:
     path: "{{supervisor_log_dir}}"
     state: directory
-    owner: root
-    group: root
-    mode: 0755
+    owner: "{{supervisor_user}}"
+    group: "{{supervisor_group}}"
+    mode: 0775
 
 - name: Copy logrotate config
   template:
@@ -41,7 +41,7 @@
 - name: Copy supervisord.conf
   template:
     src: supervisord.conf.j2
-    dest: "{{supervisor_conf}}"
+    dest: "{{supervisor_conf_file}}"
     owner: root
     group: root
     mode: 0644
@@ -49,6 +49,8 @@
 
 # programs and groups configuration.
 - include: programs_and_groups.yml
+- include: syslog.yml
+  when: supervisor_use_syslog
 
 - name: Start and enable supervisor service
   service: name=supervisord state=started enabled=yes

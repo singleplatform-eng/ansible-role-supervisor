@@ -44,11 +44,11 @@ killasgroup={{ item.killasgroup }}
 {% if item.user is defined %}
 user={{ item.user }}
 {% endif %}
-{% if item.redirect_stderr is defined %}
-redirect_stderr={{ item.redirect_stderr }}
+{% if supervisor_use_syslog or item.redirect_stderr is defined %}
+redirect_stderr={{ item.redirect_stderr if item.redirect_stderr is defined else 'true' }}
 {% endif %}
-{% if item.stdout_logfile is defined %}
-stdout_logfile={{ item.stdout_logfile }}
+{% if supervisor_use_syslog or item.stdout_logfile is defined %}
+stdout_logfile={{ item.stdout_logfile if item.stdout_logfile is defined else 'syslog' }}
 {% endif %}
 {% if item.stdout_logfile_maxbytes is defined %}
 stdout_logfile_maxbytes={{ item.stdout_logfile_maxbytes }}
