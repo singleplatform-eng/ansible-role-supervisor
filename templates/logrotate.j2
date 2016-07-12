@@ -4,4 +4,9 @@
 {% for item in supervisor_logrotate_conf %}
   {{item}}
 {% endfor %}
+{% if supervisor_use_syslog %}
+  postrotate
+    reload rsyslog >/dev/null 2>&1 || true
+  endscript
+{% endif %}
 }

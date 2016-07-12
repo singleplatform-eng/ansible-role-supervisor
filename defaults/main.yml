@@ -3,7 +3,7 @@
 supervisor_conf_file: /etc/supervisord.conf
 supervisor_include_path: /etc/supervisor
 supervisor_user: root
-supervisor_group: "{{'syslog' if supervisor_use_syslog else 'root'}}"
+supervisor_log_user: "{{supervisor_user if not supervisor_use_syslog else 'syslog'}}"
 supervisor_log_dir: /var/log/supervisor
 supervisor_log_file: "{{supervisor_log_dir}}/supervisord.log"
 supervisor_use_syslog: false
@@ -28,4 +28,4 @@ supervisor_logrotate_conf:
   - compress
   - delaycompress
   - notifempty
-  - "create 660 {{supervisor_user}} {{supervisor_group}}"
+  - "create 660 {{supervisor_log_user}} {{supervisor_user if not supervisor_use_syslog else 'adm'}}"

@@ -19,7 +19,7 @@
     path: "{{supervisor_log_dir}}"
     state: directory
     owner: "{{supervisor_user}}"
-    group: "{{supervisor_group}}"
+    group: "{{supervisor_log_user}}"
     mode: 0775
 
 - name: Copy logrotate config
