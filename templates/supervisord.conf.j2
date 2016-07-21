@@ -4,9 +4,9 @@
 file=/tmp/supervisor.sock   ; (the path to the socket file)
 
 [supervisord]
-{% for k,v in supervisor_supervisord_conf.items() %}
-{# NoneType values for syslog config should be skipped #}
-{% if v %}
+{% for k,v in supervisor_supervisord_conf.iteritems() %}
+{# empty string values for syslog config should be skipped #}
+{% if v != '' %}
 {{k}}={{v}}
 {% endif %}
 {% endfor %}
