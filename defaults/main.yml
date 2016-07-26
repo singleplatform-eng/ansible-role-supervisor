@@ -16,6 +16,7 @@ supervisor_supervisord_conf:
   logfile_maxbytes: "{{ '50MB'              if not supervisor_use_syslog else '' }}"
   logfile_backups:  "{{ '10'                if not supervisor_use_syslog else '' }}"
   loglevel:         "{{ 'info'              if not supervisor_use_syslog else '' }}"
+  user:             "{{supervisor_user}}"
   pidfile:          /tmp/supervisord.pid
   nodaemon:         'false'
   minfds:           1024
