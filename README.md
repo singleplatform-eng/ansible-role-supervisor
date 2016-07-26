@@ -18,29 +18,19 @@ Include path for supplementary configuration: `supervisor_include_path: /etc/sup
 
 User that runs supervisord: `supervisor_user: root`
 
+List of all supervisor programs: `supervisor_programs: []`
+
+List of all supervisor groups: `supervisor_program_groups: []`
+
+Enable syslog handling of supervisor logs: `supervisor_use_syslog: false`
+
+Logging directory: `supervisor_log_dir: /var/log/supervisor`
+
+supervisord log file: `supervisor_log_file: "{{supervisor_log_dir}}/supervisord.log"`
+
 User that owns log files. This changes to syslog when `supervisor_use_syslog` is enabled:
 
     supervisor_log_user: "{{supervisor_user if not supervisor_use_syslog else 'syslog'}}"
-
-Logging directory:
-
-    supervisor_log_dir: /var/log/supervisor
-
-supervisord log file:
-
-    supervisor_log_file: "{{supervisor_log_dir}}/supervisord.log"
-
-Enable syslog handling of supervisor logs:
-
-    supervisor_use_syslog: false
-
-List of all supervisor programs:
-
-    supervisor_programs: []
-
-List of all supervisor groups:
-
-    supervisor_program_groups: []
 
 Dictionary of supervisord configuration options:
 
