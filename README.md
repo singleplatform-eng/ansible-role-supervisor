@@ -1,5 +1,6 @@
+[![Build Status](https://travis-ci.org/singleplatform-eng/ansible-role-supervisor.svg?branch=master)](https://travis-ci.org/singleplatform-eng/ansible-role-supervisor)
 
-ansible-role-awscli
+ansible-role-supervisor
 =========
 
 Installs and manages supervisord programs and groups.
