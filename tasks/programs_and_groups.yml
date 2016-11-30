@@ -26,12 +26,6 @@
   shell: find {{supervisor_include_path}} -name '*.conf' -type f -printf '%f\n'|sed 's/.conf//'
   register: all_supervisor_confs
 
-- name: Remove un-managed supervisor config files
-  file:
-    path: "{{supervisor_include_path}}/{{item}}.conf"
-    state: absent
-  with_items: "{{all_supervisor_confs.stdout_lines}}"
-  # this removes the groups.yml config if supervisor_program_groups becomes empty
-  when: item not in (supervisor_programs | map(attribute='name') | list) +
-                    (supervisor_program_groups | length>0) | ternary(['groups'],[])
-  notify: restart supervisor managed programs
+# This feels like a hack around when: variable expansion
+- include: remove_configs.yml
+  when: all_supervisor_confs | length > 0
