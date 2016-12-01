@@ -21,9 +21,11 @@
   when: supervisor_program_groups|length > 0
   notify: restart supervisor managed programs
 
-# TODO: use find module once we move to 2.0
 - name: Find conf files in supervisor_include_path
-  shell: find {{supervisor_include_path}} -name '*.conf' -type f -printf '%f\n'|sed 's/.conf//'
+  find:
+    paths: "{{supervisor_include_path}}"
+    patterns: '*.conf'
+    file_type: 'file'
   register: all_supervisor_confs
 
 # This feels like a hack around when: variable expansion
