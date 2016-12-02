@@ -21,17 +21,19 @@
   when: supervisor_program_groups|length > 0
   notify: restart supervisor managed programs
 
-# TODO: use find module once we move to 2.0
 - name: Find conf files in supervisor_include_path
-  shell: find {{supervisor_include_path}} -name '*.conf' -type f -printf '%f\n'|sed 's/.conf//'
+  find:
+    paths: "{{supervisor_include_path}}"
+    patterns: '*.conf'
+    file_type: 'file'
   register: all_supervisor_confs
 
 - name: Remove un-managed supervisor config files
   file:
-    path: "{{supervisor_include_path}}/{{item}}.conf"
+    path: "{{ item.path }}"
     state: absent
-  with_items: "{{all_supervisor_confs.stdout_lines}}"
+  with_items: "{{all_supervisor_confs.files }}"
   # this removes the groups.yml config if supervisor_program_groups becomes empty
-  when: item not in (supervisor_programs | map(attribute='name') | list) +
+  when: (item.path.split('/')[-1].split('.')[0]) not in (supervisor_programs | map(attribute='name') | list) +
                     (supervisor_program_groups | length>0) | ternary(['groups'],[])
   notify: restart supervisor managed programs
