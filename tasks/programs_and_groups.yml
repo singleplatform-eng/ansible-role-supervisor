@@ -30,7 +30,7 @@
   file:
     path: "{{supervisor_include_path}}/{{item}}.conf"
     state: absent
-  with_items: "{{all_supervisor_confs.stdout_lines}}"
+  with_items: "{{all_supervisor_confs.stdout_lines | default([])}}"
   # this removes the groups.yml config if supervisor_program_groups becomes empty
   when: item not in (supervisor_programs | map(attribute='name') | list) +
                     (supervisor_program_groups | length>0) | ternary(['groups'],[])
