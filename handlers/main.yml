@@ -12,7 +12,7 @@
 
 - name: restart supervisor managed programs
   supervisorctl:
-    name: "{{item.name}}"
+    name: "{{item.name + ':' if item.numprocs is defined and item.numprocs else item.name}}"
     state: restarted
   when: item.autostart
   with_items: "{{supervisor_programs}}"
