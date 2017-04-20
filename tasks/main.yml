@@ -6,13 +6,23 @@
     state: present
 
 # https://github.com/Supervisor/initscripts
-- name: Copy supervisor init script
+- name: Copy upstart init script
   template:
     src: init_upstart.j2
     dest: /etc/init/supervisord.conf
     owner: root
     group: root
     mode: 0644
+  when: ansible_distribution_release == 'trusty'
+
+- name: Copy systemd unit file
+  template:
+    src: init_systemd.j2
+    dest: /lib/systemd/system/supervisord.service
+    owner: root
+    group: root
+    mode: 0644
+  when: ansible_distribution_release == 'xenial'
 
 - name: Ensure supervisor_log_dir exists
   file:
