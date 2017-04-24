@@ -2,4 +2,14 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - ansible-role-supervisor
+    - role_under_test
+  pre_tasks:
+    # install pip dependency
+    - name: Download pip
+      get_url: url=https://bootstrap.pypa.io/get-pip.py dest=/tmp/get-pip.py mode=0755
+      register: download
+
+    - name: Install pip
+      command: /tmp/get-pip.py
+      # skip when pip exists for idempotence check to pass
+      when: download.changed
