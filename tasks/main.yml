@@ -58,8 +58,8 @@
   notify: restart supervisord
 
 # programs and groups configuration.
-- include: programs_and_groups.yml
-- include: syslog.yml
+- include_tasks: programs_and_groups.yml
+- include_tasks: syslog.yml
   when: supervisor_use_syslog
 
 - name: Start and enable supervisor service
